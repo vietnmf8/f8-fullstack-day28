@@ -186,7 +186,7 @@ function loadPosts(page, limit = 5) {
         Lần 2: _page=2&_limit=5 → 5 posts tiếp theo (post 6–10).
         Lần 3: _page=3&_limit=5 → 5 posts tiếp theo (post 11–15).
     */
-    const postsUrl = `${API_BASE_URL}/posts?_limit=5&_page=${page}&_limit=${limit}`;
+    const postsUrl = `${API_BASE_URL}/posts?_limit=${limit}&_page=${page}`;
     sendRequest("GET", postsUrl)
         .then((posts) => {
             if (posts.length > 0) {
@@ -255,7 +255,10 @@ function filterTodos() {
 /* Hàm render danh sách todos */
 function renderTodos(todos) {
     todoList.innerHTML = ""; // Reset todo-list
-    if (!todos) return;
+    if (!todos.length) {
+        todoList.innerHTML = '<li class="empty">Không có todo nào.</li>';
+        return;
+    }
 
     todos.forEach((todo) => {
         const todoItem = todoItemTemplate.cloneNode(true);

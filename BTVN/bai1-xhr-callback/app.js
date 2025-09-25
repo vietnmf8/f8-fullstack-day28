@@ -161,6 +161,8 @@ function renderPost(post) {
         // commentsContainer.innerHTML = `<p>🔄 Đang tải comments...</p>`;
         // commentsContainer.classList.add("show");
 
+        showCommentsBtn.disabled = true;
+        commentsContainer.innerHTML = `<p>Đang tải comments...</p>`;
         const commentsUrl = `${API_BASE_URL}/posts/${post.id}/comments`;
         sendRequest("GET", commentsUrl, (error, comments) => {
             if (error) {
@@ -189,9 +191,9 @@ function renderPost(post) {
 /* Tự động load 5 posts đầu tiên khi vào trang */
 document.addEventListener("DOMContentLoaded", () => {
     // Loading
-    // postsLoading.classList.add("show");
-    // postsError.classList.remove("show");
-    // postsContainer.style.display = "none";
+    postsLoading.classList.add("show");
+    postsError.classList.remove("show");
+    postsContainer.style.display = "none";
 
     const postsUrl = `${API_BASE_URL}/posts?_limit=5`;
     sendRequest("GET", postsUrl, (error, posts) => {
@@ -200,9 +202,9 @@ document.addEventListener("DOMContentLoaded", () => {
             postsError.textContent = `Lỗi: ${error.message}`;
             return;
         }
-        // postsContainer.style.display = "grid";
-        // postsLoading.classList.remove("show");
-        // postsError.classList.remove("show");
+        postsContainer.style.display = "grid";
+        postsLoading.classList.remove("show");
+        postsError.classList.remove("show");
         // Render từng post
         posts.forEach(renderPost);
     });
@@ -312,7 +314,7 @@ loadTodosBtn.addEventListener("click", () => {
 /* Click: Các nút filter */
 todoFilters.addEventListener("click", (e) => {
     // Kiểm tra xem có phải button không
-    isButton = e.target.tagName === "BUTTON";
+    const isButton = e.target.tagName === "BUTTON";
     if (isButton) {
         // Active button
         const activeBtn = document.querySelector(".filter-btn.active");
